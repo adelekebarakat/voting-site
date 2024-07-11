@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    .chart-container {
+        position: relative;
+        height: 40vh;
+        width: 80vw;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Admin Dashboard</h1>
+
+{% for position, votes in voting_data.items %}
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>{{ position }}</h2>
+    </div>
+    <div class="card-body">
+        <div class="chart-container">
+            <canvas id="chart_{{ position|slugify }}"></canvas>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<h2>Reset Votes</h2>
+<form method="post" action="{% url 'reset_votes' %}" onsubmit="return confirm('Are you sure you want to reset all votes? This action cannot be undone.');">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Reset All Votes</button>
+</form>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    {% for position, votes in voting_data.items %}
+    new Chart(document.getElementById('chart_{{ position|slugify }}').getContext('2d'), {
+        type: 'bar',
+        data: {
+            labels: [{% for vote in votes %}'{{ vote.candidate__name }}'{% if not forloop.last %}, {% endif %}{% endfor %}],
+            datasets: [{
+                label: 'Votes',
+                data: [{% for vote in votes %}{{ vote.count }}{% if not forloop.last %}, {% endif %}{% endfor %}],
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 1
+                    }
+                }
+            }
+        }
+    });
+    {% endfor %}
+</script>
+{% endblock %}

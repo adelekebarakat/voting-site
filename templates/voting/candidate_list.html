@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Voting Information</h1>
+
+    <h2>Positions</h2>
+    <ul>
+    {% for position in positions %}
+        <li>{{ position.title }}</li>
+    {% empty %}
+        <li>No positions available.</li>
+    {% endfor %}
+    </ul>
+
+    <h2>Candidates</h2>
+    <ul>
+    {% for candidate in candidates %}
+        <li>
+            {{ candidate.name }} - {{ candidate.position.title }}
+            <img src="{{ candidate.img.url }}" alt="{{ candidate.name }}" style="width: 100px; height: auto;">
+            <p>{{ candidate.bio }}</p>
+        </li>
+    {% empty %}
+        <li>No candidates available.</li>
+    {% endfor %}
+    </ul>
+
+    <h2>Voters</h2>
+    <ul>
+    {% for voter in voters %}
+        <li>{{ voter.email }}</li>
+    {% empty %}
+        <li>No voters registered.</li>
+    {% endfor %}
+    </ul>
+
+    <h2>Votes Cast</h2>
+    <ul>
+    {% for vote in votes %}
+        <li>{{ vote.voter.email }} voted for {{ vote.candidate.name }} ({{ vote.candidate.position.title }})</li>
+    {% empty %}
+        <li>No votes cast yet.</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

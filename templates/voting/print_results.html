@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block extra_css %}
+<style>
+    @media print {
+        .no-print {
+            display: none;
+        }
+        body {
+            font-size: 12pt;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Voting Results</h1>
+    
+    <div class="no-print mb-3">
+        <button onclick="window.print()" class="btn btn-primary">Print Results</button>
+        <a href="?format=csv" class="btn btn-secondary">Download CSV</a>
+    </div>
+
+    {% for position, candidates in results.items %}
+        <h2>{{ position }}</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Candidate</th>
+                    <th>Votes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for candidate in candidates %}
+                    <tr>
+                        <td>{{ candidate.name }}</td>
+                        <td>{{ candidate.votes }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+</div>
+{% endblock %}
