@@ -16,7 +16,7 @@
     .cand_img  {
         max-width: 100px;
         max-height: 100px;
-        border-radius: 50%;
+        border-radius: 5%;
         border: 2px;
         border-style: solid;
         border-color: black;
@@ -26,6 +26,11 @@
     .card {
         background-color:#EBD3E8 ;
     }
+    [type="radio"] {
+        height:20px; 
+        width:20px;
+
+        }
 </style>
 {% endblock %}
 
@@ -48,20 +53,24 @@
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         {% for position in positions %}
         <div class="col">
-            <div class="card h-100 card-color">
+            <div class="card  h-100 card-color">
                 <div class="card-header">
                     <h2 class="card-title h5 mb-0">{{ position.title }}</h2>
                 </div>
-                <div class="card-body">
+                <div class="card-body px-4">
                     {% for candidate in position.candidate_set.all %}
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="candidate_{{ position.id }}" id="candidate_{{ candidate.id }}" value="{{ candidate.id }}" required>
-                        <div class="cand_img">
+                        <input class="form-check-input mx-2" type="radio" name="candidate_{{ position.id }}" id="candidate_{{ candidate.id }}" value="{{ candidate.id }}" required>
+                        
+                        <div class="cand_img mx-5 text-center ">
                         <img src="{{candidate.img.url}}" alt="{{candidate.name}}" class="img-fluid">
                     </div>
-                        <label class="form-check-label" for="candidate_{{ candidate.id }}">
+
+                    <div class="mt-2 mx-5">
+                        <label class="form-check-label mb-3" for="candidate_{{ candidate.id }}">
                             {{ candidate.name }}
                         </label>
+                    </div>
                     </div>
                     {% empty %}
                     <p class="text-muted">No candidates for this position.</p>
