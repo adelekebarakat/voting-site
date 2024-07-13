@@ -16,9 +16,15 @@
                         <label for="email" class="form-label">Email</label>
                         <input type="email" class="form-control" id="email" name="email" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group mb-3">
+                        
+                        <input type="password" class="form-control" id="password" name="password" required
+                        >
+                        <span class="input-group-text">
+                           <i class="bi bi-eye" id="togglePassword" style="cursor: pointer;"></i>
+                           </span>
+                        
                     </div>
                     <button type="submit" class="btn btn-primary">Login</button>
                 </form>
@@ -26,4 +32,24 @@
         </div>
     </div>
 </div>
+
+{% block extra_js %}
+<script>
+    const togglePassword = document.querySelector("#togglePassword");
+    const password = document.querySelector("#password");
+    
+    togglePassword.addEventListener("click", function () {
+       
+      // toggle the type attribute
+      const type = password.getAttribute("type") === "password" ? "text" : "password";
+      password.setAttribute("type", type);
+      // toggle the eye icon
+      this.classList.toggle('bi-eye');
+      this.classList.toggle('bi-eye-slash');
+    });
+
+
+</script>
+
+{% endblock %}
 {% endblock %}
